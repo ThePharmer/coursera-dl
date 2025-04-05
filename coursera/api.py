@@ -410,7 +410,7 @@ class AssetRetriever(object):
                         data = reply.content
                         content_type = reply.headers.get('Content-Type')
                         break  # success
-                     except requests.exceptions.RequestException as e:
+                    except requests.exceptions.RequestException as e:
                         logging.warning(f"Download failed (attempt {attempt}): {e}")
                         if attempt == MAX_RETRIES:
                             logging.error(f"Giving up on {url} after {MAX_RETRIES} attempts.")
