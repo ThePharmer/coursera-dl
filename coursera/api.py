@@ -395,11 +395,30 @@ class AssetRetriever(object):
             url = asset_dict['url']['url'].strip()
             data, content_type = None, None
 
-            if download:
-                reply = get_reply(self._session, url)
-                if reply.status_code == 200:
-                    data = reply.content
-                    content_type = reply.headers.get('Content-Type')
+if download:
+    data, content_type = None, None
+    MAX_RETRIES = 3
+    RETRY_BACKOFF = 2  # seconds
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            logging.debug(f"[Attempt {attempt}] Downloading asset from: {url}")
+            reply = self._session.get(url, timeout=(5, 30), headers={
+                "User-Agent": "Mozilla/5.0 (compatible; coursera-dl/0.11.5)"
+            })
+            reply.raise_for_status()
+            data = reply.content
+            content_type = reply.headers.get('Content-Type')
+            break  # success
+        except requests.exceptions.RequestException as e:
+            logging.warning(f"Download failed (attempt {attempt}): {e}")
+            if attempt == MAX_RETRIES:
+                logging.error(f"Giving up on {url} after {MAX_RETRIES} attempts.")
+                break
+            else:
+                sleep_time = RETRY_BACKOFF ** attempt
+                logging.debug(f"Retrying in {sleep_time} seconds...")
+                time.sleep(sleep_time)
 
             asset = Asset(id=asset_dict['id'].strip(),
                           name=asset_dict['name'].strip(),
