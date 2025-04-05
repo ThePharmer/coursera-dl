@@ -17,11 +17,10 @@ import datetime
 
 
 from bs4 import BeautifulSoup as BeautifulSoup_
-from xml.sax.saxutils import escape, unescape
+from html import unescape
 
 import six
 from six import iteritems
-from six.moves import html_parser
 from six.moves.urllib.parse import ParseResult
 from six.moves.urllib_parse import unquote_plus
 
@@ -87,21 +86,10 @@ def random_string(length):
     return ''.join(random.choice(valid_chars) for i in range(length))
 
 
-# Taken from: https://wiki.python.org/moin/EscapingHtml
-# escape() and unescape() takes care of &, < and >.
-HTML_ESCAPE_TABLE = {
-    '"': "&quot;",
-    "'": "&apos;"
-}
-
-HTML_UNESCAPE_TABLE = dict((v, k) for k, v in HTML_ESCAPE_TABLE.items())
-
-
 def unescape_html(s):
-    h = html_parser.HTMLParser()
-    s = h.unescape(s)
-    s = unquote_plus(s)
-    return unescape(s, HTML_UNESCAPE_TABLE)
+    s = unescape(s)         # Decode HTML entities
+    s = unquote_plus(s)     # Decode URL-encoded characters
+    return s
 
 
 def clean_filename(s, minimal_change=False):
@@ -114,8 +102,7 @@ def clean_filename(s, minimal_change=False):
     """
 
     # First, deal with URL encoded strings
-    h = html_parser.HTMLParser()
-    s = h.unescape(s)
+    s = unescape(s)
     s = unquote_plus(s)
 
     # Strip forbidden characters
