@@ -233,10 +233,26 @@ def main():
         return
 
     session = get_session()
-    if args.cookies_cauth:
-        session.cookies.set('CAUTH', args.cookies_cauth)
+
+    if args.cookies_file:
+        try:
+            get_cookies_for_class(
+                session,
+                class_name=args.class_names[0] if args.class_names else None,
+                cookies_file=args.cookies_file
+            )
+            logging.info(f"Loaded cookies from: {args.cookies_file}")
+        except Exception as e:
+            logging.error(f"Error loading cookies from file: {e}")
+            return
+    elif args.cookies_cauth:
+        session.cookies.set('CAUTH', args.cookies_cauth, domain=".coursera.org")
+        logging.info("Using CAUTH cookie from command line.")
     else:
-        login(session, args.username, args.password)
+        logging.error("Username and password authentication is not currently supported.\n"
+                     "Please provide a cookies file using --cookies-file or a CAUTH cookie using --cauth.")
+        return
+
     if args.specialization:
         args.class_names = expand_specializations(session, args.class_names)
 
