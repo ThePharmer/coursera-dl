@@ -11,7 +11,6 @@ import time
 import json
 import errno
 import random
-import string
 import logging
 import datetime
 
@@ -168,7 +167,7 @@ def get_anchor_format(a):
     return fmt.group(1) if fmt else None
 
 
-def mkdir_p(path, mode=0o777):
+def mkdir_p(path, mode=0o755):
     """
     Create subdirectory hierarchy given in the paths argument.
     """
