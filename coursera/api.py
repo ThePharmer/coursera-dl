@@ -964,7 +964,7 @@ class CourseraOnDemand(object):
 
         def _add_asset(name, url, destination):
             filename, extension = os.path.splitext(clean_url(name))
-            if extension is '':
+            if extension == '':
                 return
 
             extension = clean_filename(
@@ -1609,7 +1609,7 @@ class CourseraOnDemand(object):
             filename, extension = os.path.splitext(clean_url(link))
             # Some courses put links to sites in supplement section, e.g.:
             # http://pandas.pydata.org/
-            if extension is '':
+            if extension == '':
                 continue
 
             # Make lowercase and cut the leading/trailing dot
