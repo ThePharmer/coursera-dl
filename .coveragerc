@@ -1,13 +1,47 @@
 # -*- conf -*-
-[report]
+# Coverage.py configuration for coursera-dl
+
+[run]
+source = coursera
 omit =
+    */test/*
+    */tests/*
     */python?.?/*
-    */site-packages/nose/*
+    */site-packages/*
+    setup.py
+
+[report]
+precision = 2
+show_missing = True
+skip_covered = False
 
 exclude_lines =
     # Have to re-enable the standard pragma
     pragma: no cover
 
+    # Don't complain about missing debug-only code
+    def __repr__
+    if self\.debug
+
+    # Don't complain if tests don't hit defensive assertion code
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run
+    if 0:
+    if False:
+    if __name__ == .__main__.:
+
     # Python 2/3 compatibility
     except ImportError
     sys.version_info
+    if six.PY2
+    if six.PY3
+    @abc.abstractmethod
+    @abstractmethod
+
+[html]
+directory = htmlcov
+
+[xml]
+output = coverage.xml
