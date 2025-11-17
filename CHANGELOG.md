@@ -1,5 +1,64 @@
 # Change Log
 
+## 0.11.6 (TBD) - Repository Audit & Foundation
+
+**IMPORTANT**: This release includes comprehensive security audit documentation and establishes
+the foundation for upcoming security fixes. No breaking changes except improved file permissions.
+
+### Documentation
+  - Add comprehensive repository audit (REPOSITORY_REVIEW.md)
+  - Add security policy and vulnerability disclosure (SECURITY.md)
+  - Add development roadmap for next 6 months (ROADMAP.md)
+  - Add dependency status and update plan (DEPENDENCIES.md)
+  - Update README with security warnings and Python version requirements
+  - Document 4 CRITICAL, 8 HIGH, 7 MEDIUM security vulnerabilities
+
+### Security Improvements
+  - Change default directory permissions from 0o777 to 0o755 (BREAKING: minor)
+  - Add security test suite with xfail markers for unfixed vulnerabilities
+  - Improve exception logging with exception type information
+
+### Code Quality Fixes
+  - Fix string identity comparison bug (api.py:967, 1612) - use == instead of is
+  - Remove unused import in utils.py (import string)
+  - Improve exception handling documentation in parallel.py
+
+### Testing Infrastructure
+  - Add pytest fixtures for integration tests (conftest.py)
+  - Add baseline integration tests (test_integration_baseline.py)
+  - Add security vulnerability tests (test_security.py)
+  - Update coverage configuration with better exclusions
+  - Establish test markers: integration, security, slow, unit
+
+### CI/CD
+  - Add GitHub Actions workflow for automated testing
+  - Add GitHub Actions security scanning (Bandit, Safety)
+  - Add pre-commit hooks configuration (black, flake8, bandit, mypy)
+  - Add Bandit security scanner configuration
+  - Test on Python 3.8-3.11 across Linux/Mac/Windows
+
+### Project Management
+  - Add GitHub issue templates (bug report, security fix, feature request)
+  - Document all known vulnerabilities with remediation timeline
+  - Establish 3-phase roadmap (v0.12.0, v0.13.0, v0.14.0)
+
+### Deprecation Notices
+  - Python 2.7 and 3.4-3.7 are DEPRECATED (will be removed in v0.13.0)
+  - --cauth flag will be removed in v0.13.0 (use --cookies-file instead)
+  - See ROADMAP.md for complete deprecation timeline
+
+### Known Issues
+  - 4 CRITICAL vulnerabilities documented but not yet fixed (planned for v0.13.0)
+  - 8 HIGH severity issues documented (fixes planned for v0.12.0-v0.13.0)
+  - 3 known CVEs in dependencies (will be patched in v0.12.0)
+  - See SECURITY.md for workarounds and mitigation strategies
+
+### Breaking Changes
+  - Default directory permissions changed from 0o777 to 0o755
+    - Impact: Downloaded directories no longer world-writable
+    - Workaround: Manually chmod after download if world-writable needed
+    - Rationale: Security best practice
+
 ## 0.11.5 (2019-12-16)
 
 Features:
