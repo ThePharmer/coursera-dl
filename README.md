@@ -6,9 +6,52 @@
 [![Latest version on PyPI](https://img.shields.io/pypi/v/coursera-dl.svg)](https://pypi.python.org/pypi/coursera-dl)
 [![Code Climate](https://codeclimate.com/github/coursera-dl/coursera-dl/badges/gpa.svg)](https://codeclimate.com/github/coursera-dl/coursera-dl)
 
+---
+
+## ⚠️ IMPORTANT SECURITY NOTICE
+
+**This version (0.11.5) has known security vulnerabilities that are being actively addressed.**
+
+### Current Status
+- **4 CRITICAL** vulnerabilities identified
+- **8 HIGH** severity issues documented
+- **3 known CVEs** in dependencies
+- **Security fixes in progress** - see [SECURITY.md](SECURITY.md) for details
+
+### Recommended Actions
+1. **DO NOT** use `--cauth` flag (credentials visible in process list)
+2. **DO NOT** use `--downloader-arguments` with untrusted input (command injection risk)
+3. **USE** `--cookies-file` for authentication instead
+4. **RUN** with restricted user permissions (never as root)
+5. **UPDATE** to v0.13.0+ when available (security fixes)
+
+### Temporary Workarounds
+```bash
+# SAFE: Use cookies file with restricted permissions
+chmod 600 coursera_cookies.txt
+coursera-dl --cookies-file coursera_cookies.txt course-name
+
+# UNSAFE: Avoid these patterns
+# coursera-dl --cauth "SECRET_VALUE" course-name  ❌
+# coursera-dl --downloader-arguments "; malicious" course-name  ❌
+```
+
+### Roadmap
+- **v0.12.0** (Month 1): Dependency updates, CVE patches
+- **v0.13.0** (Months 2-3): All CRITICAL security fixes
+- **v0.14.0** (Months 4-6): Modernization, Python 2 removal
+
+📖 **For full details, see:**
+- [SECURITY.md](SECURITY.md) - Security policy and vulnerability disclosure
+- [REPOSITORY_REVIEW.md](REPOSITORY_REVIEW.md) - Comprehensive security audit
+- [ROADMAP.md](ROADMAP.md) - Development timeline and fixes
+
+---
+
 <!-- TOC -->
 
 - [Coursera Downloader](#coursera-downloader)
+- [⚠️ IMPORTANT SECURITY NOTICE](#️-important-security-notice)
 - [Introduction](#introduction)
 - [Features](#features)
 - [Disclaimer](#disclaimer)
@@ -100,13 +143,16 @@ relevant excerpt:
 
 # Installation instructions
 
-`coursera-dl` requires Python 2 or Python 3 and a free Coursera account
-enrolled in the class of interest. (As of February of 2020, we test
-automatically the execution of the program with Python versions 2.7, Pypy,
-3.6, 3.7, 3.8, and 3.9).
+`coursera-dl` requires **Python 3.8+** and a free Coursera account enrolled in
+the class of interest. (As of November 2025, we test automatically the execution
+of the program with Python versions 3.8, 3.9, 3.10, and 3.11).
 
-**Note:** We *strongly* recommend that you use a Python 3 interpreter (3.9
-or later).
+**⚠️ Python Version Requirements:**
+- **Python 3.8+**: ✅ Fully supported and tested
+- **Python 2.7, 3.4-3.7**: ⚠️ **DEPRECATED** - Will be removed in v0.13.0 (see [ROADMAP.md](ROADMAP.md))
+- **Python 2**: 🔴 **End of Life** since January 2020 - No security patches available
+
+**Note:** We *strongly* recommend that you use Python 3.8 or later for security reasons.
 
 On any operating system, ensure that the Python executable location is added
 to your `PATH` environment variable and, once you have the dependencies

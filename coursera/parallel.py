@@ -27,11 +27,16 @@ class AbstractDownloader(object):
         """
         Actual download call. Calls the underlying file downloader,
         catches all exceptions and returns the result.
+
+        Note: We intentionally catch all exceptions here to ensure download
+        failures don't crash the entire download process. The exception is
+        returned to the caller for handling.
         """
         try:
             return url, self._file_downloader.download(url, *args, **kwargs)
         except Exception as e:
-            logging.error("AbstractDownloader: %s", traceback.format_exc())
+            logging.error("AbstractDownloader failed with %s: %s",
+                         type(e).__name__, traceback.format_exc())
             return url, e
 
 
